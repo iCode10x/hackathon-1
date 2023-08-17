@@ -1,9 +1,14 @@
 import { ItemType } from '@/lib/drizzle'
 import BillComp from './BillComp'
+import { useAppContext } from '@/context/AppContext'
+import { useAuth } from '@clerk/nextjs'
 import CartItem from '@/components/CartItem'
 import { AiOutlineShopping } from 'react-icons/ai'
 const CartComponent = async () => {
-  const res = await fetch('/api/cart', {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const userAuth = useAuth()
+  const userId = userAuth.userId
+  const res = await fetch(`/api/usercart/${userId}`, {
     method: 'GET',
     cache: 'no-store',
   })

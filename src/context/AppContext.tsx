@@ -1,5 +1,6 @@
 'use client'
 import { ItemType } from '@/lib/drizzle'
+import { useAuth } from '@clerk/nextjs'
 type ContextType = {
   setFetchData: Dispatch<SetStateAction<number>>
   totalQuantity: number
@@ -20,12 +21,13 @@ const context = createContext({} as ContextType)
 
 export const AppContext = ({ children }: { children: ReactNode }) => {
   const [fetchData, setFetchData] = useState(0)
+  const auth = useAuth()
   const [totalQuantity, setTotalQuantity] = useState(0)
   const [totalPrice, setTotalPrice] = useState(0)
   const [search, setSearch] = useState('')
 
   async function getAllItems() {
-    const res = await fetch('/api/cart', {
+    const res = await fetch(`/api/usercart/${auth.userId}`, {
       method: 'GET',
       cache: 'no-store',
     })
