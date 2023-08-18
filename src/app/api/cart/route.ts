@@ -10,12 +10,15 @@ export const GET = async () => {
 
 export const POST = async (req: NextRequest) => {
   const request: RequestObjectType = await req.json()
+  console.log(request)
   try {
     const allItems = await db.select().from(cartTable)
     const itemExists = allItems.find(
-      (item) => request.sanityId === item.itemSanityId
+      (item) =>
+        request.sanityId === item.itemSanityId && item.userId === request.userId
     )
     if (itemExists) {
+      console.log('item already exists')
       const foundItemQuantity = itemExists.itemQuantity
       let newQuantity = foundItemQuantity + request.quantity
       const res = await db
@@ -32,6 +35,7 @@ export const POST = async (req: NextRequest) => {
         .returning()
       return NextResponse.json({ res })
     } else {
+      console.log('item is new')
       const res = await db
         .insert(cartTable)
         .values({
