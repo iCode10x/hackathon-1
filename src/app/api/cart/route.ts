@@ -10,7 +10,6 @@ export const GET = async () => {
 
 export const POST = async (req: NextRequest) => {
   const request: RequestObjectType = await req.json()
-  console.log(request)
   try {
     const allItems = await db.select().from(cartTable)
     const itemExists = allItems.find(

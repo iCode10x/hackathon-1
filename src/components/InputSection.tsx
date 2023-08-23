@@ -5,6 +5,7 @@ import { BsCart } from 'react-icons/bs'
 import { useAuth } from '@clerk/nextjs'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useAppContext } from '@/context/AppContext'
+import { SignedIn, SignedOut } from '@clerk/nextjs'
 
 const sizeArray = ['XS', 'S', 'M', 'L', 'XL']
 
@@ -71,12 +72,17 @@ const InputSection = ({
         </button>
       </div>
       <div className="flex gap-5 items-center">
-        <button className="flex bg-[#212121] text-white items-center w-[170px] gap-[10px] px-4 py-3 text-center">
-          <BsCart size={20} />
-          <span className="font-bold" onClick={addToCart}>
-            Add to Cart
-          </span>
-        </button>
+        <SignedIn>
+          <button className="flex bg-[#212121] text-white items-center w-[170px] gap-[10px] px-4 py-3 text-center">
+            <BsCart size={20} />
+            <span className="font-bold" onClick={addToCart}>
+              Add to Cart
+            </span>
+          </button>
+        </SignedIn>
+        <SignedOut>
+          <p className="text-xl">You need to sign-in first!</p>
+        </SignedOut>
         <p className="text-2xl font-bold">${price}.00</p>
       </div>
     </div>
